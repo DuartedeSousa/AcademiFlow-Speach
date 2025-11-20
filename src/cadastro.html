@@ -8,24 +8,37 @@
     <link rel="stylesheet" href="./estilo.css">
     <title>AcademiFlow | Cadastro</title>
 </head>
+
 <body>
-<div class="container">
-    <h2> CadASTRO </h2>
-    <form action="/criarcadastro" method="get">
-        <label for="usuario"> Usuario: </label>
-        <input type="text" id="usuario" name="usuario">
+    <header>
+        <img src="#" alt="logo da academiflow">
+    </header>
 
-        <label for="senha"> Senha: </label>
-        <input type="password" id="senha" name="senha">
+    <main>
+        <h2> Cadastro </h2>
+        <form action="/criarcadastro" method="get">
+            <label for="usuario"> Usuário: </label>
+            <input type="text" id="usuario" name="usuario">
 
-        <label for="cargo"> Cargo: </label>
-        <select name="cars" id="cars">
-            <option value="professor">Professor</option>
-            <option value="aluno">Aluno</option>
-        </select>
+            <label for="senha"> Senha: </label>
+            <input type="password" id="senha" name="senha">
 
-        <button type="submit"> Cadastrar </button>
-    </form>
-</div>
+            <label for="cargo"> Cargo: </label>
+            <select name="cars" id="cars">
+                <option value="professor">Professor</option>
+                <option value="aluno">Aluno</option>
+            </select>
+
+            <button type="submit"> Cadastrar </button>
+        </form>
+        <div>
+            <a href="#">Já possui uma conta? Entrar</a>
+        </div>
+
+    </main>
+    
+    <footer>
+        <p>Copyright ©2025 Speach</p>
+    </footer>
 </body>
 </html>
