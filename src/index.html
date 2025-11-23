@@ -5,12 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./estilo.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <title>AcademiFlow | Login</title>
 </head>
 
 <body>
     <header>
+        <img src="#" alt="logo da Laguna School">
         <img src="#" alt="logo da academiflow">
     </header>
 
@@ -18,21 +19,20 @@
     <main class="acess-container">
         <h2> Login </h2>
         <form action="/login" method="get">
-            <label for="usuario"> Usuário: </label>
-            <input type="text" id="usuario" name="usuario">
 
-            <label for="senha"> Senha: </label>
-            <input type="password" id="senha" name="senha">
+            <input type="text" id="usuario" name="usuario" placeholder="Usuário" class="data-entry">
+            
+            <input type="password" id="senha" name="senha" placeholder="Senha" class="data-entry">
 
-            <button type="submit"> ENTRAR </button>
+            <button type="submit" class="button-entry"> Login </button>
         </form>
         <div>
-            <a href="#">Sem uma conta? Cadastre-se </a>
+            <a href="./cadastro.html">Sem uma conta? Cadastre-se </a>
         </div>
     </main>
 
 
-    <footer>
+    <footer class="copyrights">
         <p>Copyright ©2025 Speach</p>
     </footer>
 </body>

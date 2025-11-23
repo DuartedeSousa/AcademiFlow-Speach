@@ -1,0 +1,99 @@
+@import url('./global.css');
+
+/* HEADER */
+
+
+
+/* HEADER END */
+
+/* BODY */
+body{
+    display: flex;
+    background-color: blueviolet;
+    flex-direction: column;
+    align-items: center;
+}
+
+.acess-container{
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.411);
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    width: 345.5px;
+    height: 358.5px;
+    margin: 95px;
+    border-radius: 10px;
+}
+
+form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.acess-container h2{
+    margin-top: 36px;
+    color: var(--color-neutral-white);
+}
+
+.data-entry{
+    width: 277px;
+    height: 41px;
+    border-radius: 25px;
+    background-color: #ffffff00;
+}
+
+.button-entry{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 277px;
+    height: 38.5px;
+    border-radius: 25px;
+    color: blueviolet;
+}
+
+
+
+
+
+
+
+
+
+.cadastre-container{
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.411);
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    width: 345.5px;
+    height: 406px;
+    margin: 71.5px;
+    border-radius: 10px;
+}
+
+
+.cadastre-container h2{
+    margin-top: 36px;
+    color: var(--color-neutral-white);
+}
+
+.cadastre-container input{
+    width: 277px;
+    height: 41px;
+    border-radius: 25px;
+    background-color: #ffffff00;
+}
+
+
+
+/* BODY END */
+
+/* FOOTER */
+.copyrights{
+    color: var(--color-neutral-white);
+}
+/* FOOTER END */
