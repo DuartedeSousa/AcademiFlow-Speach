@@ -44,6 +44,11 @@ form{
     border-radius: 25px;
     background-color: #ffffff00;
 }
+.data-entry::placeholder {
+    text-align: ;
+}
+
+
 
 .button-entry{
     display: flex;
@@ -54,7 +59,6 @@ form{
     border-radius: 25px;
     color: blueviolet;
 }
-
 
 
 
@@ -94,6 +98,9 @@ form{
 
 /* FOOTER */
 .copyrights{
+    display: flex;
     color: var(--color-neutral-white);
+    flex-direction: column;
+    align-items: flex-end;
 }
 /* FOOTER END */
