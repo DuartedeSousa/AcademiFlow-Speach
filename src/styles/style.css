@@ -43,9 +43,15 @@ form{
     height: 41px;
     border-radius: 25px;
     background-color: #ffffff00;
+    border-color: var(--color-neutral-white);
+    border-width: 6px;
 }
 .data-entry::placeholder {
-    text-align: ;
+    display: flex;
+    justify-content: space-around;
+    text-align:end;
+    margin-right: 226px;
+    color: var(--color-neutral-white);
 }
 
 
