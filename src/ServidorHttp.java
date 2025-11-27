@@ -101,7 +101,7 @@ public class ServidorHttp {
         /* FIM DO CÓDIGO */
 
         servidor.start();
-        System.out.println("Servidor rodando em http://localhost:8080/");
+        System.out.println("Servidor rodando em http://localhost:8081/");
     }
 
     // Envia um arquivo (HTML ou CSS)

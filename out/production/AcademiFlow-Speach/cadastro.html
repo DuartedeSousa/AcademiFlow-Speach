@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="Pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./styles/style.css">
+    <title>AcademiFlow | Cadastro</title>
+</head>
+
+<body>
+    <header>
+        <img src="#" alt="logo da Laguna School">
+        <img src="#" alt="logo da academiflow">
+    </header>
+
+    <main class="cadastre-container">
+        <h2> Cadastro </h2>
+        <form action="/criarcadastro" method="get">
+            <input type="text" id="usuario" name="usuario" placeholder="Usuário" class="data-entry">
+
+            <input type="password" id="senha" name="senha" placeholder="Senha" class="data-entry">
+
+            <select name="cargo" id="cargo" class="data-entry">
+                <option value="placeholder">Cargo</option>
+                <option value="professor">Professor</option>
+                <option value="aluno">Aluno</option>
+            </select>
+
+            <button type="submit" class="button-entry"> Cadastrar </button>
+        </form>
+        <div>
+            <a href="./index.html">Já possui uma conta? Entrar</a>
+        </div>
+
+    </main>
+    
+    <footer class="copyrights">
+        <p>Copyright ©2025 Speach</p>
+    </footer>
+</body>
+</html>
