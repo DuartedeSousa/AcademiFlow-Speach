@@ -1,5 +1,3 @@
-package main.java;
-
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.*;
@@ -138,9 +136,162 @@ public class Server {
                     html.append("<p><strong>Paticipação:</strong> ").append(participacao).append("</p>");
 
                     //Botão de Participar
+                    html.append("<form method=\"POST\" action=\"/participar\">");
+                    html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                    html.append("<input type=\"hidden\" name=\"acao\" value=\"participar\">");
+                    html.append("<button type=\"submit\">Participar</button>");
+                    html.append("</form>");
+
+                    //Botão de Não Participar
+                    html.append("<form method=\"POST\" action=\"/participar\">");
+                    html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                    html.append("<input type=\"hidden\" name=\"acao\" value=\"nao-participar\">");
+                    html.append("<button type=\"submit\">Não Participar</button>");
+                    html.append("</form>");
+
+                    //Botão para Deletar (Mover função para a página de envio nas próximas versões)
+                    html.append("<form method=\"POST\" action=\"/deletar\">");
+                    html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                    html.append("<input type=\"hidden\" name=\"acao\" value=\"nao\">");
+                    html.append("<button type=\"submit\">Deletar</button>");
+                    html.append("</form>");
+
+                    html.append("</div>");
                 }
+
+                if (vazio) {
+                    html.append("<p>Nenhuma atividade enviada ainda.</p>");
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                html.append("<p>Erro ao carregar atividades.</p>");
             }
 
+            html.append("</body><html>");
+
+            //Enviar HTML criado
+            byte[] b = html.toString().getBytes(StandardCharsets.UTF_8);
+            t.getResponseHeaders().add("Contet-Type", "text/html; charset=UTF-8");
+            t.sendresponseHeaders(200, b.length);
+            t.getResponseBody().write(b);
+            t.close();
         }
+
+        //Participar ou não um card específico----------------------------------------------------------------------
+
+        private static void participar(HttpExchange t) throws IOException {
+
+            if (!t.getResquestMethod().equalsIgnoreCase("POST")) {
+                redirecionar(t, "/aluno");
+                return;
+            }
+
+            String corpo = URLDecoder.decode(ler(t), StandardCharsets.UTF_8);
+            String acao = pega(corpo, "acao"); //Participar ou não
+            String idStr = pega(corpo, "id");
+
+            try {
+                int id = Integer.parseInt(idStr);
+
+                try (PreparedStatement ps = con.prepareStatement(
+                        "UPDATE dados SET participacao = ? WHERE id = ?")) {
+                    ps.setString(1, acao);
+                    ps.setInt(2, id);
+                    ps.executeUpdate();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            redirecionar(t, "/aluno");
+        }
+
+        //Deletar--------------------------------------------------------------------------
+
+        private static void deletar(HttpExchange t) throws IOException {
+
+            if (!t.getResquestMethod().equalsIgnoreCase("POST")) {
+                redirecionar(t, "/aluno");
+                return;
+            }
+
+            String corpo = URLDecoder.decode(ler(t), StandardCharsets.UTF_8);
+            String acao = pega(corpo, "acao"); //Participar ou não
+            String idStr = pega(corpo, "id");
+
+            try {
+                int id = Integer.parseInt(idStr);
+
+                try (PreparedStatement ps = con.prepareStatement(
+                        "DELETE FROM dados WHERE id = ?")) {
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            redirecionar(t, "/aluno");
+        }
+
+        //Enviar Imagens-------------------------------------------------------------------------------
+
+        private static void enviarImagem(HttpExchange t, String arquivo) throws IOException {
+            File f = new File("src/main/java" + arquivo);
+
+            byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
+            t.getResponseHeaders().add("Content-Type", "imagem/png");
+            t.getResponseHeaders(200, bytes.length);
+            t.getResponseBody().write(bytes);
+            t.close();
+        }
+
+        //Funções auxiliares--------------------------------------------------------------
+
+        private static String pega(String corpo, String campo) {
+
+            //corpo no formato: campo1=valor1&campo2=valor2...
+            for (String s : corpo.split("&")) {
+                String[] p = s.split("=");
+                if (p.length == 2 && p[0].equals(campo)) return p[1];
+            }
+            return "";
+        }
+
+        private static String ler(HttpExchange t) throws IOException {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(t.getRequestBody(), StandardChasets.UTF_8)
+            );
+            String linha = br.readLine();
+            return (linha == null) ? "" : linha;
+        }
+
+        private static void enviar(HttpExchange t, String arq) throws IOException {
+            File f = new File("src/main/java" + arq);
+            byte[] b = java.nio.file.Files.readAllBytes(f.toPath());
+            t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
+            t.sendResponseHeaders(200, b.length);
+            t.getResponseBody().write(b);
+            t.close();
+        }
+
+        private static void enviarCSS(HttpExchange t, String arq) throws IOException {
+            File f = new File("src/main/java" + arq);
+            byte[] b = java.nio.file.Files.readAllBytes(f.toPath());
+            t.getResponseHeaders().add("Content-Type", "text/css; charset=UTF-8");
+            t.sendResponseHeaders(200, b.length);
+            t.getResponseBody().write(b);
+            t.close();
+        }
+
+        private static void redirecionar(HttpExchange t, String rota) throws IOException {
+        t.getResponseHeaders().add("Location", rota);
+        t.sendResponseHeaders(302, -1);
+        t.close();
+        }
+
     }
 }
