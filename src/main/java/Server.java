@@ -10,9 +10,9 @@ public class Server {
 
     private static Connection con;
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 
-    //Conexão com o SQLite
+        //Conexão com o SQLite
         con = DriverManager.getConnection("jdbc:sqlite:content.db");
 
         //Criar tabela
@@ -29,14 +29,14 @@ public class Server {
         HttpServer s = HttpServer.create(new InetSocketAddress(8080), 0);
 
         //Rotas
-        s.createContext("/", t -> enviar(t,"index.html"));
-        s.createContext("/cadastro", t -> enviar(t,"cadastro.html"));
-        s.createContext("/sobre", t -> enviar(t,"sobre.html"));
-        s.createContext("/style.css", t -> enviarCSS(t,"style.css"));
-        s.createContext("/global.css", t -> enviarCSS(t,"global.css"));
+        s.createContext("/", t -> enviar(t, "index.html"));
+        s.createContext("/cadastro", t -> enviar(t, "cadastro.html"));
+        s.createContext("/sobre", t -> enviar(t, "sobre.html"));
+        s.createContext("/style.css", t -> enviarCSS(t, "style.css"));
+        s.createContext("/global.css", t -> enviarCSS(t, "global.css"));
 
         s.createContext("/login", Server::login);
-        s.createContext("/criarcadastro", Server::criarcadastro);
+        //s.createContext("/criarcadastro", Server::criarCadastro);
         s.createContext("/envio", Server::envio);
         s.createContext("/aluno", Server::aluno);
         s.createContext("/participar", Server::participar);
@@ -45,11 +45,12 @@ public class Server {
 
         s.start();
         System.out.println("Servidor em http://localhost:8080/");
+    }
 
         //Login------------------------------------------------
 
         private static void login(HttpExchange t) throws IOException {
-            if (!t.getResquestMethod().equalsIgnoreCase("POST")){
+            if (!t.getRequestMethod().equalsIgnoreCase("POST")){
                 enviar(t, "index.html");
                 return;
             }
@@ -66,9 +67,9 @@ public class Server {
 
         //Envio---------------------------------------------
 
-        private static void envio(httpExchange t) throws IOException {
+        private static void envio(HttpExchange t) throws IOException {
 
-            if (!t.getRequestMethod().esqualsIgnoreCase("POST")) {
+            if (!t.getRequestMethod().equalsIgnoreCase("POST")) {
                 enviar(t, "envio.html");
                 return;
             }
@@ -86,6 +87,9 @@ public class Server {
                 ps.setString(2, desc);
                 ps.setString(3, data);
                 ps.setString(4, "nenhuma");
+                ps.executeUpdate();
+
+
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -99,17 +103,23 @@ public class Server {
         private static void aluno(HttpExchange t) throws IOException {
             StringBuilder html = new StringBuilder();
 
+            System.out.println("aqui 1");
+
             html.append("<!DOCTYPE html>");
             html.append("<html><head>");
             html.append("<meta charset=\"UTF-8\">");
+            html.append("<link rel=\"stylesheet\" href=\"./style.css\">");
             html.append("<title>AcademiFlow | Aluno</title>");
             html.append("link rel=\"stylesheet\" href=\"/style.css\">");
             html.append("</head><body>");
 
             try (Statement st = con.createStatement();
+
                  ResultSet rs = st.executeQuery("SELECT id, materia, descricao, data, participacao FROM dados ORDER BY id DESC")) {
+                System.out.println("aqui 2");
 
                 boolean vazio = true;
+                System.out.println("aqui 3");
 
                 while (rs.next()) {
                     vazio = false;
@@ -119,6 +129,10 @@ public class Server {
                     String desc = rs.getString("descricao");
                     String data = rs.getString("data");
                     String participacao = rs.getString("participacao");
+
+
+                    System.out.println("SELE " + materia);
+
 
                     //Mudar cor do card
                     String classeExtra = "";
@@ -173,7 +187,7 @@ public class Server {
             //Enviar HTML criado
             byte[] b = html.toString().getBytes(StandardCharsets.UTF_8);
             t.getResponseHeaders().add("Contet-Type", "text/html; charset=UTF-8");
-            t.sendresponseHeaders(200, b.length);
+            t.sendResponseHeaders(200, b.length);
             t.getResponseBody().write(b);
             t.close();
         }
@@ -182,7 +196,7 @@ public class Server {
 
         private static void participar(HttpExchange t) throws IOException {
 
-            if (!t.getResquestMethod().equalsIgnoreCase("POST")) {
+            if (!t.getRequestMethod().equalsIgnoreCase("POST")) {
                 redirecionar(t, "/aluno");
                 return;
             }
@@ -212,7 +226,7 @@ public class Server {
 
         private static void deletar(HttpExchange t) throws IOException {
 
-            if (!t.getResquestMethod().equalsIgnoreCase("POST")) {
+            if (!t.getRequestMethod().equalsIgnoreCase("POST")) {
                 redirecionar(t, "/aluno");
                 return;
             }
@@ -244,7 +258,7 @@ public class Server {
 
             byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
             t.getResponseHeaders().add("Content-Type", "imagem/png");
-            t.getResponseHeaders(200, bytes.length);
+            t.sendResponseHeaders(200, bytes.length);
             t.getResponseBody().write(bytes);
             t.close();
         }
@@ -263,14 +277,15 @@ public class Server {
 
         private static String ler(HttpExchange t) throws IOException {
             BufferedReader br = new BufferedReader(
-                    new InputStreamReader(t.getRequestBody(), StandardChasets.UTF_8)
+                    new InputStreamReader(t.getRequestBody(), StandardCharsets.UTF_8)
             );
             String linha = br.readLine();
             return (linha == null) ? "" : linha;
         }
 
         private static void enviar(HttpExchange t, String arq) throws IOException {
-            File f = new File("src/main/java" + arq);
+            File f = new File("src/main/java/" + arq);
+            System.out.println("Arq " + f);
             byte[] b = java.nio.file.Files.readAllBytes(f.toPath());
             t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
             t.sendResponseHeaders(200, b.length);
@@ -279,7 +294,8 @@ public class Server {
         }
 
         private static void enviarCSS(HttpExchange t, String arq) throws IOException {
-            File f = new File("src/main/java" + arq);
+            File f = new File("src/main/java/styles/" + arq);
+            System.out.println("CSS " + f);
             byte[] b = java.nio.file.Files.readAllBytes(f.toPath());
             t.getResponseHeaders().add("Content-Type", "text/css; charset=UTF-8");
             t.sendResponseHeaders(200, b.length);
@@ -288,10 +304,10 @@ public class Server {
         }
 
         private static void redirecionar(HttpExchange t, String rota) throws IOException {
-        t.getResponseHeaders().add("Location", rota);
-        t.sendResponseHeaders(302, -1);
-        t.close();
+            t.getResponseHeaders().add("Location", rota);
+            t.sendResponseHeaders(302, -1);
+            t.close();
         }
 
-    }
 }
+
