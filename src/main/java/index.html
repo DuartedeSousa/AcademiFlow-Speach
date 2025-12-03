@@ -21,11 +21,24 @@
     <main>
         <article class="acess-container">
             <h2> Login </h2>
-            <form action="/login" method="get">
+            <form action="/login" method="POST">
 
                 <input type="text" id="usuario" name="usuario" placeholder="Usuário" class="data-entry">
                 
                 <input type="password" id="senha" name="senha" placeholder="Senha" class="data-entry">
+
+
+
+                <label>
+                    <input type="radio" name="tipo" value="envio" checked>
+                    Professor
+                </label>
+
+                <label>
+                    <input type="radio" name="tipo" value="aluno" checked>
+                    Aluno
+                </label>
+
 
                 <button type="submit" class="button-entry"> Login </button>
             </form>

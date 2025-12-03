@@ -36,7 +36,7 @@ public class Server {
         s.createContext("/global.css", t -> enviarCSS(t, "global.css"));
 
         s.createContext("/login", Server::login);
-        //s.createContext("/criarcadastro", Server::criarCadastro);
+        //s.createContext("/criarcadastro", Server::criarcadastro);
         s.createContext("/envio", Server::envio);
         s.createContext("/aluno", Server::aluno);
         s.createContext("/participar", Server::participar);
@@ -55,14 +55,38 @@ public class Server {
                 return;
             }
 
+            System.out.println("testsad");
+
             String corpo = ler(t);
             corpo = URLDecoder.decode(corpo, StandardCharsets.UTF_8);
 
-            if (corpo.contains("envio")){
-                redirecionar(t, "/envio");
+            String query = corpo;
+            String[] partes;
+            partes = query.split("&");
+
+            String usuario;
+            String senha;
+
+
+            usuario = partes[0].replace("usuario=", "");
+            senha = partes[1].replace("senha=", "");
+
+            System.out.println("Usuario ss  " + usuario + senha);
+
+            if(usuario.equals("Duarte")) {
+                if (senha.equals("123")) {
+                    if (corpo.contains("envio")){
+                        redirecionar(t, "/envio");
+                    } else {
+                        redirecionar(t, "/aluno");
+                    }
+                } else {
+                    System.out.println("aaa");
+                }
             } else {
-                redirecionar(t, "/aluno");
+                System.out.println("bbbb");
             }
+
         }
 
         //Envio---------------------------------------------
@@ -250,6 +274,7 @@ public class Server {
 
             redirecionar(t, "/aluno");
         }
+
 
         //Enviar Imagens-------------------------------------------------------------------------------
 
