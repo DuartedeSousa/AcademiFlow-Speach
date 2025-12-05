@@ -32,6 +32,8 @@ public class Server {
         s.createContext("/", t -> enviar(t, "index.html"));
         s.createContext("/cadastro", t -> enviar(t, "cadastro.html"));
         s.createContext("/sobre", t -> enviar(t, "sobre.html"));
+        s.createContext("/errosenha", t -> enviar(t, "errosenha.html"));
+        s.createContext("/errousuario", t -> enviar(t, "errousuario.html"));
         s.createContext("/style.css", t -> enviarCSS(t, "style.css"));
         s.createContext("/global.css", t -> enviarCSS(t, "global.css"));
 
@@ -39,6 +41,7 @@ public class Server {
         //s.createContext("/criarcadastro", Server::criarcadastro);
         s.createContext("/envio", Server::envio);
         s.createContext("/aluno", Server::aluno);
+        s.createContext("/professor", Server::professor);
         s.createContext("/participar", Server::participar);
         s.createContext("/deletar", Server::deletar);
 
@@ -81,10 +84,10 @@ public class Server {
                         redirecionar(t, "/aluno");
                     }
                 } else {
-                    System.out.println("aaa");
+                    redirecionar(t, "/errosenha");
                 }
             } else {
-                System.out.println("bbbb");
+                redirecionar(t, "/errousuario");
             }
 
         }
@@ -132,9 +135,8 @@ public class Server {
             html.append("<!DOCTYPE html>");
             html.append("<html><head>");
             html.append("<meta charset=\"UTF-8\">");
-            html.append("<link rel=\"stylesheet\" href=\"./style.css\">");
+            html.append("<link rel=\"stylesheet\" href=\"/style.css\">");
             html.append("<title>AcademiFlow | Aluno</title>");
-            html.append("link rel=\"stylesheet\" href=\"/style.css\">");
             html.append("</head><body>");
 
             try (Statement st = con.createStatement();
@@ -187,12 +189,6 @@ public class Server {
                     html.append("<button type=\"submit\">Não Participar</button>");
                     html.append("</form>");
 
-                    //Botão para Deletar (Mover função para a página de envio nas próximas versões)
-                    html.append("<form method=\"POST\" action=\"/deletar\">");
-                    html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
-                    html.append("<input type=\"hidden\" name=\"acao\" value=\"nao\">");
-                    html.append("<button type=\"submit\">Deletar</button>");
-                    html.append("</form>");
 
                     html.append("</div>");
                 }
@@ -215,6 +211,86 @@ public class Server {
             t.getResponseBody().write(b);
             t.close();
         }
+
+
+    //Aluno--------------------------------------------------------------------------------------------
+
+    private static void professor(HttpExchange t) throws IOException {
+        StringBuilder html = new StringBuilder();
+
+        System.out.println("aqui 1");
+
+        html.append("<!DOCTYPE html>");
+        html.append("<html><head>");
+        html.append("<meta charset=\"UTF-8\">");
+        html.append("<link rel=\"stylesheet\" href=\"./style.css\">");
+        html.append("<title>AcademiFlow | Aluno</title>");
+        html.append("</head><body>");
+
+        try (Statement st = con.createStatement();
+
+             ResultSet rs = st.executeQuery("SELECT id, materia, descricao, data, participacao FROM dados ORDER BY id DESC")) {
+            System.out.println("aqui 2");
+
+            boolean vazio = true;
+            System.out.println("aqui 3");
+
+            while (rs.next()) {
+                vazio = false;
+
+                int id = rs.getInt("id");
+                String materia = rs.getString("materia");
+                String desc = rs.getString("descricao");
+                String data = rs.getString("data");
+                String participacao = rs.getString("participacao");
+
+
+                System.out.println("SELE " + materia);
+
+
+                //Mudar cor do card
+                String classeExtra = "";
+                if ("participar".equals(participacao)) {
+                    classeExtra = " aluno-participando";
+                } else if ("nao-participar".equals(participacao)) {
+                    classeExtra = " aluno-nao-participando";
+                }
+
+                html.append("<div class=\"card").append(classeExtra).append("\">");
+                html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
+                html.append("<p><strong>Matéria:</strong> ").append(materia).append("</p>");
+                html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
+                html.append("<p><strong>Data:</strong> ").append(data).append("</p>");
+                html.append("<p><strong>Paticipação:</strong> ").append(participacao).append("</p>");
+
+                //Botão para Deletar (Mover função para a página de envio nas próximas versões)
+                html.append("<form method=\"POST\" action=\"/deletar\">");
+                html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                html.append("<input type=\"hidden\" name=\"acao\" value=\"nao\">");
+                html.append("<button type=\"submit\">Deletar</button>");
+                html.append("</form>");
+
+                html.append("</div>");
+            }
+
+            if (vazio) {
+                html.append("<p>Nenhuma atividade enviada ainda.</p>");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            html.append("<p>Erro ao carregar atividades.</p>");
+        }
+
+        html.append("</body><html>");
+
+        //Enviar HTML criado
+        byte[] b = html.toString().getBytes(StandardCharsets.UTF_8);
+        t.getResponseHeaders().add("Contet-Type", "text/html; charset=UTF-8");
+        t.sendResponseHeaders(200, b.length);
+        t.getResponseBody().write(b);
+        t.close();
+    }
 
         //Participar ou não um card específico----------------------------------------------------------------------
 
