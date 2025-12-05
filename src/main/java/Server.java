@@ -44,6 +44,7 @@ public class Server {
         s.createContext("/professor", Server::professor);
         s.createContext("/participar", Server::participar);
         s.createContext("/deletar", Server::deletar);
+        s.createContext("/editar", Server::editar);
 
 
         s.start();
@@ -213,7 +214,7 @@ public class Server {
         }
 
 
-    //Aluno--------------------------------------------------------------------------------------------
+    //Professor--------------------------------------------------------------------------------------------
 
     private static void professor(HttpExchange t) throws IOException {
         StringBuilder html = new StringBuilder();
@@ -258,16 +259,26 @@ public class Server {
 
                 html.append("<div class=\"card").append(classeExtra).append("\">");
                 html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
-                html.append("<p><strong>Matéria:</strong> ").append(materia).append("</p>");
+
+                html.append("<p><strong>Matéria:</strong> ").append("</p>");
+                html.append("<input type=\"text\" name=\"materia\">").append(materia);
+
                 html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
                 html.append("<p><strong>Data:</strong> ").append(data).append("</p>");
                 html.append("<p><strong>Paticipação:</strong> ").append(participacao).append("</p>");
 
-                //Botão para Deletar (Mover função para a página de envio nas próximas versões)
+                //Botão para Deletar
                 html.append("<form method=\"POST\" action=\"/deletar\">");
                 html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
                 html.append("<input type=\"hidden\" name=\"acao\" value=\"nao\">");
                 html.append("<button type=\"submit\">Deletar</button>");
+                html.append("</form>");
+
+                //Botão para Editar
+                html.append("<form method=\"POST\" action=\"/editar\">");
+                html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                html.append("<input type=\"hidden\" name=\"acao\" value=\"nao\">");
+                html.append("<button type=\"submit\">Editar</button>");
                 html.append("</form>");
 
                 html.append("</div>");
@@ -327,7 +338,7 @@ public class Server {
         private static void deletar(HttpExchange t) throws IOException {
 
             if (!t.getRequestMethod().equalsIgnoreCase("POST")) {
-                redirecionar(t, "/aluno");
+                redirecionar(t, "/professor");
                 return;
             }
 
@@ -348,7 +359,36 @@ public class Server {
                 e.printStackTrace();
             }
 
-            redirecionar(t, "/aluno");
+            redirecionar(t, "/");
+        }
+
+        //Editar--------------------------------------------------------------------------
+
+        private static void editar(HttpExchange t) throws IOException {
+
+            if (!t.getRequestMethod().equalsIgnoreCase("POST")) {
+                redirecionar(t, "/professor");
+                return;
+            }
+
+            String corpo = URLDecoder.decode(ler(t), StandardCharsets.UTF_8);
+            String acao = pega(corpo, "acao"); //Participar ou não
+            String idStr = pega(corpo, "id");
+
+            try {
+                int id = Integer.parseInt(idStr);
+
+                try (PreparedStatement ps = con.prepareStatement(
+                        "UPDATE FROM dados WHERE id = ?")) {
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            redirecionar(t, "/professor");
         }
 
 
