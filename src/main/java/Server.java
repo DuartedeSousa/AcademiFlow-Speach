@@ -259,26 +259,28 @@ public class Server {
 
                 html.append("<div class=\"card").append(classeExtra).append("\">");
                 html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
-
                 html.append("<p><strong>Matéria:</strong> ").append("</p>");
-                html.append("<input type=\"text\" name=\"materia\">").append(materia);
 
-                html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
-                html.append("<p><strong>Data:</strong> ").append(data).append("</p>");
+                //html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
+                //html.append("<p><strong>Data:</strong> ").append(data).append("</p>");
                 html.append("<p><strong>Paticipação:</strong> ").append(participacao).append("</p>");
+
+                //Botão para Editar
+                html.append("<form method=\"POST\" action=\"/editar\">");
+                html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+
+
+                html.append("<input type=\"text\" name=\"materia\" value=\"").append(materia).append("\">");
+                html.append("<input type=\"text\" name=\"descricao\" value=\"").append(desc).append("\">");
+                html.append("<input type=\"date\" name=\"data\" value=\"").append(data).append("\">");
+                html.append("<button type=\"submit\">Editar</button>");
+                html.append("</form>");
 
                 //Botão para Deletar
                 html.append("<form method=\"POST\" action=\"/deletar\">");
                 html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
                 html.append("<input type=\"hidden\" name=\"acao\" value=\"nao\">");
                 html.append("<button type=\"submit\">Deletar</button>");
-                html.append("</form>");
-
-                //Botão para Editar
-                html.append("<form method=\"POST\" action=\"/editar\">");
-                html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
-                html.append("<input type=\"hidden\" name=\"acao\" value=\"nao\">");
-                html.append("<button type=\"submit\">Editar</button>");
                 html.append("</form>");
 
                 html.append("</div>");
@@ -343,7 +345,6 @@ public class Server {
             }
 
             String corpo = URLDecoder.decode(ler(t), StandardCharsets.UTF_8);
-            String acao = pega(corpo, "acao"); //Participar ou não
             String idStr = pega(corpo, "id");
 
             try {
@@ -359,7 +360,7 @@ public class Server {
                 e.printStackTrace();
             }
 
-            redirecionar(t, "/");
+            redirecionar(t, "/professor");
         }
 
         //Editar--------------------------------------------------------------------------
@@ -372,19 +373,43 @@ public class Server {
             }
 
             String corpo = URLDecoder.decode(ler(t), StandardCharsets.UTF_8);
-            String acao = pega(corpo, "acao"); //Participar ou não
+            String materia = pega(corpo, "materia");
+            String desc = pega(corpo, "descricao");
+            String data = pega(corpo, "data");
             String idStr = pega(corpo, "id");
+
 
             try {
                 int id = Integer.parseInt(idStr);
 
                 try (PreparedStatement ps = con.prepareStatement(
-                        "UPDATE FROM dados WHERE id = ?")) {
-                    ps.setInt(1, id);
+                        "UPDATE dados SET materia = ? WHERE id = ?")) {
+
+                    ps.setString(1, materia);
+                    ps.setInt(2, id);
                     ps.executeUpdate();
+
                 }
 
-            } catch (Exception e) {
+                try (PreparedStatement ps = con.prepareStatement(
+                        "UPDATE dados SET descricao = ? WHERE id = ?")) {
+
+                    ps.setString(1, desc);
+                    ps.setInt(2, id);
+                    ps.executeUpdate();
+
+                }
+
+                try (PreparedStatement ps = con.prepareStatement(
+                        "UPDATE dados SET data = ? WHERE id = ?")) {
+
+                    ps.setString(1, data);
+                    ps.setInt(2, id);
+                    ps.executeUpdate();
+
+                }
+
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
 
