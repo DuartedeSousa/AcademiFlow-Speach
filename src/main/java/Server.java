@@ -225,7 +225,7 @@ public class Server {
         html.append("<html><head>");
         html.append("<meta charset=\"UTF-8\">");
         html.append("<link rel=\"stylesheet\" href=\"./style.css\">");
-        html.append("<title>AcademiFlow | Aluno</title>");
+        html.append("<title>AcademiFlow | Professor</title>");
         html.append("</head><body>");
 
         try (Statement st = con.createStatement();
