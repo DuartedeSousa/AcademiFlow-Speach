@@ -45,6 +45,11 @@ public class Server {
         s.createContext("/participar", Server::participar);
         s.createContext("/deletar", Server::deletar);
         s.createContext("/editar", Server::editar);
+        s.createContext("/vermais", Server::vermais);
+
+        //Imagens
+        s.createContext("/andre.jpeg", t -> enviarImagemII(t, "andre.jpeg"));
+
 
 
         s.start();
@@ -77,12 +82,14 @@ public class Server {
 
             System.out.println("Usuario ss  " + usuario + senha);
 
-            if(usuario.equals("Duarte")) {
-                if (senha.equals("123")) {
-                    if (corpo.contains("envio")){
-                        redirecionar(t, "/envio");
-                    } else {
+            if(usuario.equals("ArielDias") || usuario.equals("Duarte")) {
+                if (senha.equals("eai") && usuario.equals("ArielDias") || senha.equals("123") && usuario.equals("Duarte")) {
+                    if (corpo.contains("envio") && usuario.equals("ArielDias") && senha.equals("eai")){
+                        redirecionar(t, "/professor");
+                    } else if  (corpo.contains("aluno") && usuario.equals("Duarte") && senha.equals("123")){
                         redirecionar(t, "/aluno");
+                    } else {
+                        redirecionar(t, "/envio");
                     }
                 } else {
                     redirecionar(t, "/errosenha");
@@ -170,9 +177,9 @@ public class Server {
                     }
 
                     html.append("<div class=\"card").append(classeExtra).append("\">");
-                    html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
+                    //html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
                     html.append("<p><strong>Matéria:</strong> ").append(materia).append("</p>");
-                    html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
+                    //html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
                     html.append("<p><strong>Data:</strong> ").append(data).append("</p>");
                     html.append("<p><strong>Paticipação:</strong> ").append(participacao).append("</p>");
 
@@ -188,6 +195,13 @@ public class Server {
                     html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
                     html.append("<input type=\"hidden\" name=\"acao\" value=\"nao-participar\">");
                     html.append("<button type=\"submit\">Não Participar</button>");
+                    html.append("</form>");
+
+                    //Botão de Ver Mais
+                    html.append("<form method=\"POST\" action=\"/vermais\">");
+                    html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                    //html.append("<input type=\"hidden\" name=\"acao\" value=\"nao-participar\">");
+                    html.append("<button type=\"submit\">Ver mais</button>");
                     html.append("</form>");
 
 
@@ -258,7 +272,7 @@ public class Server {
                 }
 
                 html.append("<div class=\"card").append(classeExtra).append("\">");
-                html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
+                //html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
                 html.append("<p><strong>Matéria:</strong> ").append("</p>");
 
                 //html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
@@ -416,14 +430,131 @@ public class Server {
             redirecionar(t, "/professor");
         }
 
+        //Ver mais--------------------------------------------------------------------------------------------
+
+        private static void vermais(HttpExchange t) throws IOException {
+            StringBuilder html = new StringBuilder();
+            if (!t.getRequestMethod().equalsIgnoreCase("POST")) {
+                redirecionar(t, "/aluno");
+                return;
+            }
+
+
+
+            String corpo = URLDecoder.decode(ler(t), StandardCharsets.UTF_8);
+            String idStr = pega(corpo, "id");
+
+
+
+            String comando;
+            comando = "SELECT * FROM dados WHERE id=" + idStr;
+
+
+
+            System.out.println("aqui 1");
+
+            html.append("<!DOCTYPE html>");
+            html.append("<html><head>");
+            html.append("<meta charset=\"UTF-8\">");
+            html.append("<link rel=\"stylesheet\" href=\"./style.css\">");
+            html.append("<title>AcademiFlow | Professor</title>");
+            html.append("</head><body>");
+
+            try {
+                int id = Integer.parseInt(idStr);
+
+                try (Statement st = con.createStatement();
+
+                     ResultSet rs = st.executeQuery(comando)) {
+                    System.out.println("aqui 2");
+
+                    boolean vazio = true;
+                    System.out.println("aqui 3");
+
+                    while (rs.next()) {
+                        vazio = false;
+
+                        String materia = rs.getString("materia");
+                        String desc = rs.getString("descricao");
+                        String data = rs.getString("data");
+                        String participacao = rs.getString("participacao");
+
+
+                        //Mudar cor do card
+                        String classeExtra = "";
+                        if ("participar".equals(participacao)) {
+                            classeExtra = " aluno-participando";
+                        } else if ("nao-participar".equals(participacao)) {
+                            classeExtra = " aluno-nao-participando";
+                        }
+
+                        html.append("<div class=\"card").append(classeExtra).append("\">");
+                        //html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
+                        html.append("<p><strong>Matéria:</strong> ").append(materia).append("</p>");
+                        html.append("<p><strong>Descrição:</strong> ").append(desc).append("</p>");
+                        html.append("<p><strong>Data:</strong> ").append(data).append("</p>");
+                        html.append("<p><strong>Paticipação:</strong> ").append(participacao).append("</p>");
+
+                        //Botão de Participar
+                        html.append("<form method=\"POST\" action=\"/participar\">");
+                        html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                        html.append("<input type=\"hidden\" name=\"acao\" value=\"participar\">");
+                        html.append("<button type=\"submit\">Participar</button>");
+                        html.append("</form>");
+
+                        //Botão de Não Participar
+                        html.append("<form method=\"POST\" action=\"/participar\">");
+                        html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
+                        html.append("<input type=\"hidden\" name=\"acao\" value=\"nao-participar\">");
+                        html.append("<button type=\"submit\">Não Participar</button>");
+                        html.append("</form>");
+
+                        //Botão Ver Menos
+                        html.append("<a href=\"/aluno\">Ver Menos</a>");
+
+
+
+                        html.append("</div>");
+                    }
+
+                    if (vazio) {
+                        html.append("<p>Nenhuma atividade enviada ainda.</p>");
+                    }
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                html.append("<p>Erro ao carregar atividades.</p>");
+            }
+
+            html.append("</body><html>");
+
+            //Enviar HTML criado
+            byte[] b = html.toString().getBytes(StandardCharsets.UTF_8);
+            t.getResponseHeaders().add("Contet-Type", "text/html; charset=UTF-8");
+            t.sendResponseHeaders(200, b.length);
+            t.getResponseBody().write(b);
+            t.close();
+        }
+
 
         //Enviar Imagens-------------------------------------------------------------------------------
 
         private static void enviarImagem(HttpExchange t, String arquivo) throws IOException {
-            File f = new File("src/main/java" + arquivo);
+            File f = new File("src/main/java/assets/images" + arquivo);
 
             byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
             t.getResponseHeaders().add("Content-Type", "imagem/png");
+            t.sendResponseHeaders(200, bytes.length);
+            t.getResponseBody().write(bytes);
+            t.close();
+        }
+
+        private static void enviarImagemII(HttpExchange t, String arquivo) throws IOException {
+            File f = new File("src/main/java/assets/images" + arquivo);
+
+            byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
+            t.getResponseHeaders().add("Content-Type", "imagem/jpeg");
             t.sendResponseHeaders(200, bytes.length);
             t.getResponseBody().write(bytes);
             t.close();

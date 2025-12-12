@@ -3,16 +3,28 @@
 /* HEADER */
 header{
     display: flex;
-    background-color: blueviolet;
     justify-content: center;
+    background-color: white;
 }
 
 /* HEADER END */
 
 /* MAIN */
+body{
+    background-color: blue;
+}
 
+.body-login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url(https://i.pinimg.com/1200x/85/67/ba/8567bab3653c77d443870bbdfc460ccd.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+}
 main{
-    background-color: blueviolet;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,17 +32,55 @@ main{
 
 .acess-container{
     display: flex;
-    background-color: rgba(255, 255, 255, 0.411);
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(2px);
+    border: 2px solid #ffffff44;
     align-items: center;
     flex-direction: column;
     gap: 30px;
-    width: 345.5px;
-    height: 358.5px;
-    margin: 95px;
+    width: 350px;
+    height: 390px;
+    margin: 50px;
     border-radius: 10px;
 }
 
-form{
+.shipping-container{
+    display: flex;
+    background-color: rgba(109, 0, 172, 0.356);
+    backdrop-filter: blur(2px);
+    border: 2px solid #ffffff44;
+    align-items: center;
+    flex-direction: column;
+    gap: 1px;
+    width: 420px;
+    height: 540px;
+    margin: 50px;
+    border-radius: 10px;
+}
+
+
+.shipping-container h2{
+    margin-bottom: 20px;
+    margin-top: 20px;
+    color: white;
+}
+
+.shipping-container label{
+    color: white;
+}
+
+.shipping-form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.options{
+    display: flex;
+    gap: 100px;
+}
+
+.form-login{
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -47,8 +97,7 @@ form{
     height: 41px;
     border-radius: 25px;
     background-color: #ffffff00;
-    border-color: var(--color-neutral-white);
-    border-width: 6px;
+    border: 2px solid #ffffff44;
     color: var(--color-neutral-white);
 }
 
@@ -60,7 +109,14 @@ form{
     color: var(--color-neutral-white);
 }
 
-
+.desc-entry{
+    width: 277px;
+    height: 100px;
+    border-radius: 25px;
+    background-color: #ffffff00;
+    border: 2px solid #ffffff44;
+    color: var(--color-neutral-white);
+}
 
 
 
@@ -71,7 +127,6 @@ form{
     width: 277px;
     height: 38.5px;
     border-radius: 25px;
-    color: blueviolet;
 }
 
 
@@ -139,7 +194,6 @@ form{
 
 footer{
     display: flex;
-    background-color: blueviolet;
     justify-content: center;
 }
 
@@ -155,3 +209,7 @@ footer{
     margin: 20px;
 }
 /* FOOTER END */
+
+/* SOBRE HTML */
+
+/* SOBRE HTML END */

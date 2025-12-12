@@ -4,6 +4,7 @@
 header{
     display: flex;
     justify-content: center;
+    background-color: white;
 }
 
 /* HEADER END */
@@ -45,7 +46,7 @@ main{
 
 .shipping-container{
     display: flex;
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(109, 0, 172, 0.356);
     backdrop-filter: blur(2px);
     border: 2px solid #ffffff44;
     align-items: center;
@@ -57,9 +58,15 @@ main{
     border-radius: 10px;
 }
 
+
 .shipping-container h2{
     margin-bottom: 20px;
     margin-top: 20px;
+    color: white;
+}
+
+.shipping-container label{
+    color: white;
 }
 
 .shipping-form{
@@ -202,3 +209,7 @@ footer{
     margin: 20px;
 }
 /* FOOTER END */
+
+/* SOBRE HTML */
+
+/* SOBRE HTML END */

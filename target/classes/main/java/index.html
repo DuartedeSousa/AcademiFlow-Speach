@@ -9,7 +9,7 @@
     <title>AcademiFlow | Login</title>
 </head>
 
-<body>
+<body class="body-login">
     <header>
         <div>
             <img src="#" alt="logo da Laguna School">
@@ -18,27 +18,27 @@
     </header>
 
 
-    <main>
+    <main class="main-login">
         <article class="acess-container">
             <h2> Login </h2>
-            <form action="/login" method="POST">
+            <form action="/login" method="POST" class="form-login">
 
                 <input type="text" id="usuario" name="usuario" placeholder="Usuário" class="data-entry">
                 
                 <input type="password" id="senha" name="senha" placeholder="Senha" class="data-entry">
 
 
+                <div class="options">
+                    <label>
+                        <input type="radio" name="tipo" value="envio" checked>
+                        Professor
+                    </label>
 
-                <label>
-                    <input type="radio" name="tipo" value="envio" checked>
-                    Professor
-                </label>
-
-                <label>
-                    <input type="radio" name="tipo" value="aluno" checked>
-                    Aluno
-                </label>
-
+                    <label>
+                        <input type="radio" name="tipo" value="aluno" checked>
+                        Aluno
+                    </label>
+                </div>
 
                 <button type="submit" class="button-entry"> Login </button>
             </form>
