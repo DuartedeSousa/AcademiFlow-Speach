@@ -185,6 +185,7 @@ public class Server {
                         classeExtra = " aluno-nao-participando";
                     }
 
+                    
                     html.append("<div class=\"card").append(classeExtra).append("\">");
                     //html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
                     html.append("<p><strong>Matéria:</strong> ").append(materia).append("</p>");
@@ -225,6 +226,7 @@ public class Server {
                 e.printStackTrace();
                 html.append("<p>Erro ao carregar atividades.</p>");
             }
+
 
             html.append("<footer><div class=\"copyrights\">");
             html.append("<p>Copyright ©2025 Speach</p>");
