@@ -34,6 +34,7 @@ public class Server {
         s.createContext("/sobre", t -> enviar(t, "sobre.html"));
         s.createContext("/errosenha", t -> enviar(t, "errosenha.html"));
         s.createContext("/errousuario", t -> enviar(t, "errousuario.html"));
+        s.createContext("/erro", t -> enviar(t, "erro.html"));
         s.createContext("/style.css", t -> enviarCSS(t, "style.css"));
         s.createContext("/global.css", t -> enviarCSS(t, "global.css"));
 
@@ -49,7 +50,6 @@ public class Server {
 
         //Imagens
         s.createContext("/andre.jpeg", t -> enviarImagemII(t, "andre.jpeg"));
-
 
 
         s.start();
@@ -89,7 +89,7 @@ public class Server {
                     } else if  (corpo.contains("aluno") && usuario.equals("Duarte") && senha.equals("123")){
                         redirecionar(t, "/aluno");
                     } else {
-                        redirecionar(t, "/envio");
+                        redirecionar(t, "/erro");
                     }
                 } else {
                     redirecionar(t, "/errosenha");

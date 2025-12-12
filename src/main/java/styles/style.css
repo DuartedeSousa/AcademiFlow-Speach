@@ -22,7 +22,7 @@ header{
 
 /* MAIN */
 body{
-    background-color: blue;
+    background-color:#5000b9;
 }
 
 .body-login{
@@ -170,6 +170,15 @@ main{
 
 
 
+.imagens{
+    height: 50px;
+    width: 50px;
+}
+
+
+
+
+
 
 
 
@@ -272,6 +281,6 @@ footer{
 }
 /* FOOTER END */
 
-/* SOBRE HTML */
 
-/* SOBRE HTML END */
+
+
