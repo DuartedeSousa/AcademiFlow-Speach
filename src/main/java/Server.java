@@ -153,7 +153,7 @@ public class Server {
             html.append("<img src=\"#\" alt=\"logo da Laguna School\">");
             html.append("<img src=\"#\" alt=\"logo da academiflow\">");
             html.append("</div>");
-            html.append("<a href=\"./.html\">Voltar para o login <img src=\"#\" alt=\"imagem de uma representação de uma pessoa\"></a>");
+            html.append("<a href=\"./.html\" class=\"button-entry\">Voltar para o login <img src=\"#\" alt=\"imagem de uma representação de uma pessoa\"></a>");
             html.append("</header>");
 
             try (Statement st = con.createStatement();
@@ -261,7 +261,7 @@ public class Server {
         html.append("<img src=\"#\" alt=\"logo da Laguna School\">");
         html.append("<img src=\"#\" alt=\"logo da academiflow\">");
         html.append("</div>");
-        html.append("<a href=\"./.html\">Voltar para o login <img src=\"#\" alt=\"imagem de uma representação de uma pessoa\"></a>");
+        html.append("<a href=\"./.html\" class=\"button-entry\">Voltar para o login <img src=\"#\" alt=\"imagem de uma representação de uma pessoa\"></a>");
         html.append("</header>");
 
         try (Statement st = con.createStatement();
