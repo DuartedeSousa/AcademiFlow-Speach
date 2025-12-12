@@ -50,6 +50,8 @@ public class Server {
 
         //Imagens
         s.createContext("/andre.jpeg", t -> enviarImagemII(t, "andre.jpeg"));
+        s.createContext("/marques.jpeg", t -> enviarImagemII(t, "marques.jpeg"));
+        //O Duarte não queria tirar uma foto
 
 
         s.start();
@@ -185,7 +187,7 @@ public class Server {
                         classeExtra = " aluno-nao-participando";
                     }
 
-                    
+
                     html.append("<div class=\"card").append(classeExtra).append("\">");
                     //html.append("<p><strong>ID:</strong> ").append(id).append("</p>");
                     html.append("<p><strong>Matéria:</strong> ").append(materia).append("</p>");
@@ -264,6 +266,7 @@ public class Server {
         html.append("<img src=\"#\" alt=\"logo da academiflow\">");
         html.append("</div>");
         html.append("<a href=\"./.html\" class=\"button-entry\">Voltar para o login <img src=\"#\" alt=\"imagem de uma representação de uma pessoa\"></a>");
+        html.append("<a href=\"/envio\" class=\"button-entry\">Criar uma atividade <img src=\"#\" alt=\"imagem de uma representação de uma folha\"></a>");
         html.append("</header>");
 
         try (Statement st = con.createStatement();
