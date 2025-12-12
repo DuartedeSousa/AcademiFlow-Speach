@@ -145,7 +145,14 @@ public class Server {
             html.append("<meta charset=\"UTF-8\">");
             html.append("<link rel=\"stylesheet\" href=\"/style.css\">");
             html.append("<title>AcademiFlow | Aluno</title>");
-            html.append("</head><body>");
+            html.append("</head><body class=\"body-aluno\">");
+
+            html.append("<header class=\"header-aluno\">");
+            html.append("<h1>Área do Aluno</h1>");
+            html.append("<div>");
+            html.append("<img src=\"#\" alt=\"logo da Laguna School\">");
+            html.append("<img src=\"#\" alt=\"logo da academiflow\">");
+            html.append("</div></header>");
 
             try (Statement st = con.createStatement();
 
@@ -216,6 +223,10 @@ public class Server {
                 e.printStackTrace();
                 html.append("<p>Erro ao carregar atividades.</p>");
             }
+
+            html.append("<footer><div class=\"copyrights\">");
+            html.append("<p>Copyright ©2025 Speach</p>");
+            html.append(" </div></footer>");
 
             html.append("</body><html>");
 
@@ -541,7 +552,7 @@ public class Server {
         //Enviar Imagens-------------------------------------------------------------------------------
 
         private static void enviarImagem(HttpExchange t, String arquivo) throws IOException {
-            File f = new File("src/main/java/assets/images" + arquivo);
+            File f = new File("src/main/java/assets/images/" + arquivo);
 
             byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
             t.getResponseHeaders().add("Content-Type", "imagem/png");
@@ -551,7 +562,7 @@ public class Server {
         }
 
         private static void enviarImagemII(HttpExchange t, String arquivo) throws IOException {
-            File f = new File("src/main/java/assets/images" + arquivo);
+            File f = new File("src/main/java/assets/images/" + arquivo);
 
             byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
             t.getResponseHeaders().add("Content-Type", "imagem/jpeg");
