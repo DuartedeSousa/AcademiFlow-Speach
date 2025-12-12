@@ -35,6 +35,16 @@ body{
     background-position: center;
 }
 
+.body-envio{
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+    min-height: 100vh;
+    background: url(https://wallpapers.com/images/hd/purple-aesthetic-laptop-nnnryc301hv6sfxh.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
 .body-aluno{
     background-color: #5000b9;
 }
@@ -68,22 +78,21 @@ main{
 
 .shipping-container{
     display: flex;
-    background-color: rgba(109, 0, 172, 0.356);
-    backdrop-filter: blur(2px);
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(8px);
     border: 2px solid #ffffff44;
     align-items: center;
     flex-direction: column;
     gap: 1px;
     width: 420px;
     height: 540px;
-    margin: 50px;
     border-radius: 10px;
 }
 
 
 .shipping-container h2{
-    margin-bottom: 20px;
     margin-top: 20px;
+    margin-bottom: 20px;
     color: white;
 }
 
@@ -149,6 +158,13 @@ main{
     width: 277px;
     height: 38.5px;
     border-radius: 25px;
+}
+
+.button-aluno{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
 }
 
 

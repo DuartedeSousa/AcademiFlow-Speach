@@ -152,7 +152,9 @@ public class Server {
             html.append("<div>");
             html.append("<img src=\"#\" alt=\"logo da Laguna School\">");
             html.append("<img src=\"#\" alt=\"logo da academiflow\">");
-            html.append("</div></header>");
+            html.append("</div>");
+            html.append("<a href=\"./.html\">Voltar para o login <img src=\"#\" alt=\"imagem de uma representação de uma pessoa\"></a>");
+            html.append("</header>");
 
             try (Statement st = con.createStatement();
 
@@ -194,21 +196,21 @@ public class Server {
                     html.append("<form method=\"POST\" action=\"/participar\">");
                     html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
                     html.append("<input type=\"hidden\" name=\"acao\" value=\"participar\">");
-                    html.append("<button type=\"submit\">Participar</button>");
+                    html.append("<button type=\"submit\" class=\"button-aluno\">Participar</button>");
                     html.append("</form>");
 
                     //Botão de Não Participar
                     html.append("<form method=\"POST\" action=\"/participar\">");
                     html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
                     html.append("<input type=\"hidden\" name=\"acao\" value=\"nao-participar\">");
-                    html.append("<button type=\"submit\">Não Participar</button>");
+                    html.append("<button type=\"submit\" class=\"button-aluno\">Não Participar</button>");
                     html.append("</form>");
 
                     //Botão de Ver Mais
                     html.append("<form method=\"POST\" action=\"/vermais\">");
                     html.append("<input type=\"hidden\" name=\"id\" value=\"").append(id).append("\">");
                     //html.append("<input type=\"hidden\" name=\"acao\" value=\"nao-participar\">");
-                    html.append("<button type=\"submit\">Ver mais</button>");
+                    html.append("<button type=\"submit\" class=\"button-aluno\">Ver mais</button>");
                     html.append("</form>");
 
 
@@ -252,6 +254,15 @@ public class Server {
         html.append("<link rel=\"stylesheet\" href=\"./style.css\">");
         html.append("<title>AcademiFlow | Professor</title>");
         html.append("</head><body>");
+
+        html.append("<header class=\"header-professor\">");
+        html.append("<h1>Área do Professor</h1>");
+        html.append("<div>");
+        html.append("<img src=\"#\" alt=\"logo da Laguna School\">");
+        html.append("<img src=\"#\" alt=\"logo da academiflow\">");
+        html.append("</div>");
+        html.append("<a href=\"./.html\">Voltar para o login <img src=\"#\" alt=\"imagem de uma representação de uma pessoa\"></a>");
+        html.append("</header>");
 
         try (Statement st = con.createStatement();
 
